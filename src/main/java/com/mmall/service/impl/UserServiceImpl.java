@@ -26,16 +26,11 @@ public class UserServiceImpl implements IUserService{
         if(resultCount == 0){
             return ServerResponse.createByErrorMessage("用户名不存在");
         }
-
-        // MD5
-
-        User user = userMapper.selectLogin(username, password);
+        User user = userMapper.selectLogin(username, MD5Util.MD5EncodeUtf8(password));
         if(user == null){
             return ServerResponse.createByErrorMessage("密码错误");
         }
-
         user.setPassword(org.apache.commons.lang3.StringUtils.EMPTY);
-
         return ServerResponse.createBySuccess("登录成功",user);
     }
 
@@ -165,5 +160,17 @@ public class UserServiceImpl implements IUserService{
         }
         user.setPassword(org.apache.commons.lang3.StringUtils.EMPTY);
         return ServerResponse.createBySuccess(user);
+    }
+
+    /**
+     * 校验是否管理员
+     * @param user
+     * @return
+     */
+    public ServerResponse checkAdminRole(User user){
+        if(user != null && user.getRole().intValue() == Const.Role.ROLE_ADMIN){
+            return ServerResponse.createBySuccess();
+        }
+        return ServerResponse.createByError();
     }
 }

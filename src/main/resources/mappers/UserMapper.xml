@@ -77,8 +77,7 @@
         #{id,jdbcType=INTEGER},
       </if>
       <if test="username != null" >
-        #{username,jdbcType=VARCHAR},
-      </if>
+        #{username,jdbcType=VARCHAR},</if>
       <if test="password != null" >
         #{password,jdbcType=VARCHAR},
       </if>
@@ -165,7 +164,7 @@
     SELECT
     <include refid="Base_Column_List"/>
     from mmall_user
-    where usernaeme = #{username}
+    where username = #{username}
     and password = #{password}
   </select>
 
@@ -200,7 +199,7 @@
   </select>
 
   <select id="checkEmailByUserId" resultType="int" parameterType="map">
-    SELECT count(1) mmall_user
+    SELECT count(1) FROM mmall_user
     WHERE email = #{email}
     and id != #{userId}
   </select>
